@@ -1,10 +1,9 @@
 <script setup>
 import { cn } from '@/lib/utils';
-import { Label } from 'reka-ui';
+import { CalendarHeader, useForwardProps } from 'reka-ui';
 import { computed } from 'vue';
 
 const props = defineProps({
-  for: { type: String, required: false },
   asChild: { type: Boolean, required: false },
   as: { type: null, required: false },
   class: { type: null, required: false },
@@ -15,18 +14,17 @@ const delegatedProps = computed(() => {
 
   return delegated;
 });
+
+const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
-  <Label
-    v-bind="delegatedProps"
+  <CalendarHeader
     :class="
-      cn(
-        'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-        props.class,
-      )
+      cn('relative flex w-full items-center justify-between pt-1', props.class)
     "
+    v-bind="forwardedProps"
   >
     <slot />
-  </Label>
+  </CalendarHeader>
 </template>

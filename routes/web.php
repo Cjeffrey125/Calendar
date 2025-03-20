@@ -21,11 +21,23 @@ Route::get('/', function () {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
     ]);
-})->name('welcome');;
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/events', function () {
+    return Inertia::render('Events');
+})->name('events');
+
+Route::get('/about-us', function () {
+    return Inertia::render('AboutUs');
+})->name('aboutUs');
+
+Route::get('/contact-us', function () {
+    return Inertia::render('ContactUs');
+})->name('contactUs');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
