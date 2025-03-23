@@ -2,6 +2,8 @@
     <Head title="Welcome" />
 
     <div class="flex min-h-screen w-full flex-col">
+        <Toaster />
+
         <Header 
             :can-login="canLogin" 
             :can-register="canRegister" 
@@ -85,11 +87,11 @@
                             </p>
 
                             <div class="flex flex-col w-full">
-                                <input type="text" placeholder="Name" class="w-full px-4 py-2 mt-4 border border-gray-300 rounded-md" />
-                                <input type="email" placeholder="Email" class="w-full px-4 py-2 mt-4 border border-gray-300 rounded-md" />
-                                <textarea placeholder="Message" class="w-full px-4 py-2 mt-4 border border-gray-300 rounded-md" rows="4"></textarea>
+                                <input v-model="name" type="text" placeholder="Name" class="w-full px-4 py-2 mt-4 border border-gray-300 rounded-md" />
+                                <input v-model="email" type="email" placeholder="Email" class="w-full px-4 py-2 mt-4 border border-gray-300 rounded-md" />
+                                <textarea v-model="message" placeholder="Message" class="w-full px-4 py-2 mt-4 border border-gray-300 rounded-md" rows="4"></textarea>
 
-                                <Button variant="lightGreen" type="submit" class="w-20 ml-auto mt-4">
+                                <Button @click="submitForm" variant="lightGreen" class="w-20 ml-auto mt-4">
                                     Submit
                                 </Button>
                             </div>
@@ -119,8 +121,6 @@
                             <span>school@email.com</span>
                         </div>
                     </div>
-
-
                 </section>
 
             </main>
@@ -128,11 +128,14 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
-import Header from '@/Layouts/Header.vue'
-import { onMounted, ref } from 'vue';
+import { useToast } from '@/components/ui/toast/use-toast';
+import { Toaster } from '@/components/ui/toast'
 import Events from './Events.vue';
+import Header from '@/Layouts/Header.vue'
 
 
 defineProps({
@@ -144,7 +147,12 @@ defineProps({
     },
 });
 
+const { toast } = useToast();
 const scrollContainer = ref(null);
+const name = ref('');
+const email = ref('');
+const message = ref('');
+const status = ref('');
 
 onMounted(() => {
     let isScrolling = false;
@@ -166,6 +174,48 @@ onMounted(() => {
         }
     }, { passive: false });
 });
+
+const submitForm = () => {
+    if (!name.value || !email.value || !message.value) {
+        toast({
+            title: 'Missing Fields',
+            description: 'All fields are required!',
+            variant: 'destructive',
+            duration: 5000,
+        });
+        return;
+    }
+
+    const payload = {
+        name: name.value,
+        email: email.value,
+        message: message.value,
+        status: "pending"
+    };
+
+    axios.post('/api/inquiries', payload)
+        .then(response => {
+            toast({
+                title: 'Success!',
+                description: response.data.message || 'Your inquiry has been submitted.',
+                variant: 'success',
+                duration: 5000,
+            });
+
+            name.value = '';
+            email.value = '';
+            message.value = '';
+        })
+        .catch(error => {
+            toast({
+                title: 'Error',
+                description: error.response?.data?.message || 'There was an issue submitting your inquiry.',
+                variant: 'destructive',
+                duration: 5000,
+            });
+        });
+};
+
 
 </script>
 
