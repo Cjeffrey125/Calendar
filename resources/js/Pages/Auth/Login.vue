@@ -39,7 +39,7 @@
                                 </Link>
                             </div>
 
-                            <Button type="submit" class="w-full" :class="{ 'opacity-50': form.processing }" :disabled="form.processing" @click.prevent="submit" >
+                            <Button variant="lightGreen" type="submit" class="w-full" :class="{ 'opacity-50': form.processing }" :disabled="form.processing" @click.prevent="submit" >
                                 Login
                             </Button>
 
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="flex justify-center items-center order-1 lg:order-2">
-                        <img src="/images/test.png" alt="Test Image" class="w-full max-w-md lg:max-w-full lg:w-auto"/>
+                        <img src="/images/test.jpg" alt="Test Image" class="w-full max-w-md lg:max-w-full lg:w-auto"/>
                     </div>
                 </CardContent>
             </Card>

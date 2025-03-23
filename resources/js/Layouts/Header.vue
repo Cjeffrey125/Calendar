@@ -44,17 +44,7 @@
 
                 <template v-else>
                     <div class="flex h-16 items-center gap-6 px-4 md:px-6">
-                        <Link :href="route('events')" class="text-muted-foreground hover:text-foreground">
-                            Events
-                        </Link>
 
-                        <Link :href="route('aboutUs')" class="text-muted-foreground hover:text-foreground">
-                            About Us
-                        </Link>
-
-                        <Link :href="route('contactUs')" class="text-muted-foreground hover:text-foreground">
-                            Contact Us
-                        </Link>
                         <!-- <Link :href="route('login')" class="text-muted-foreground hover:text-foreground">
                             Log in
                         </Link>

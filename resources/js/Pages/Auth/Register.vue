@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <Button class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    <Button variant="lightGreen" class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                         Register
                                     </Button>
                                 </div>
