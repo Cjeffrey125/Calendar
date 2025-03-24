@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class InquiriesController extends Controller
 {
+    public function index()
+    {
+        $inquiries = Inquiry::all();
+
+        return response()->json([
+            'inquiries' => $inquiries,
+        ]);
+    }
     public function store(Request $request)
     {
         $validated = $request->validate([

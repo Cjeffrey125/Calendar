@@ -3,7 +3,6 @@
       <Sidebar collapsible="icon">
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
               <Collapsible
                 v-for="item in data.navMain"
@@ -14,73 +13,20 @@
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger as-child>
-                    <SidebarMenuButton :tooltip="item.title">
-                      <component :is="item.icon" />
-                      <span>{{ item.title }}</span>
-                      <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <SidebarMenuButton
+                      :tooltip="item.title"
+                      @click="selectItem(item)"
+                      :class="[
+                        'flex items-center gap-2 p-2 rounded-md transition-colors',
+                        selectedItemTitle === item.title ? 'text-emerald-500 bg-gray-100' : 'hover:text-emerald-500 hover:bg-gray-100'
+                      ]"
+                    >
+                      <component :is="item.icon" :class="selectedItemTitle === item.title ? 'text-emerald-500' : ''" />
+                      <span :class="selectedItemTitle === item.title ? 'text-emerald-500' : ''">{{ item.title }}</span>
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuSubItem
-                        v-for="subItem in item.items"
-                        :key="subItem.title"
-                      >
-                        <SidebarMenuSubButton as-child>
-                          <a :href="subItem.url">
-                            <span>{{ subItem.title }}</span>
-                          </a>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
-            </SidebarMenu>
-          </SidebarGroup>
-          <SidebarGroup class="group-data-[collapsible=icon]:hidden">
-            <SidebarGroupLabel>Projects</SidebarGroupLabel>
-            <SidebarMenu>
-              <SidebarMenuItem
-                v-for="item in data.projects"
-                :key="item.name"
-              >
-                <SidebarMenuButton as-child>
-                  <a :href="item.url">
-                    <component :is="item.icon" />
-                    <span>{{ item.name }}</span>
-                  </a>
-                </SidebarMenuButton>
-                <DropdownMenu>
-                  <DropdownMenuTrigger as-child>
-                    <SidebarMenuAction show-on-hover>
-                      <MoreHorizontal />
-                      <span class="sr-only">More</span>
-                    </SidebarMenuAction>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent class="w-48 rounded-lg" side="bottom" align="end">
-                    <DropdownMenuItem>
-                      <Folder class="text-muted-foreground" />
-                      <span>View Project</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Forward class="text-muted-foreground" />
-                      <span>Share Project</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Trash2 class="text-muted-foreground" />
-                      <span>Delete Project</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton class="text-sidebar-foreground/70">
-                  <MoreHorizontal class="text-sidebar-foreground/70" />
-                  <span>More</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
@@ -91,29 +37,21 @@
             <SidebarTrigger class="-ml-1 mt-32" />
           </div>
       </header>
+
+      <SidebarInset>
+      <div class="flex items-center gap-2 px-4 mt-24">
+      </div>
+      <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <Inquiries v-if="selectedItemTitle === 'Inquiries'" />
+        <UsersList v-if="selectedItemTitle === 'Users'" />
+      </div>
+    </SidebarInset>
+
     </SidebarProvider>
 </template>
 
-<script setup lang=ts>
-
-
-
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Separator } from '@/components/ui/separator'
+<script setup lang="ts">
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   Sidebar,
   SidebarContent,
@@ -132,163 +70,31 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
-import {
-  AudioWaveform,
+import { Users, Calendar, MessageCircleQuestion } from 'lucide-vue-next'
+import { defineProps, ref } from 'vue'
+import Inquiries from '@/Pages/Dashboard/Inquiries.vue'
+import UsersList from '@/Pages/Dashboard/UsersList.vue'
 
-  BookOpen,
-  Bot,
-  ChevronRight,
-  ChevronsUpDown,
-  Command,
+const selectedItemTitle = ref('Events')
 
-  Folder,
-  Forward,
-  Frame,
-  GalleryVerticalEnd,
-
-  Map,
-  MoreHorizontal,
-  PieChart,
-  Plus,
-  Settings2,
-
-  SquareTerminal,
-  Trash2,
-} from 'lucide-vue-next'
-import { ref } from 'vue'
-
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
-  ],
-  navMain: [
-    {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: 'History',
-          url: '#',
-        },
-        {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
-      items: [
-        {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'General',
-          url: '#',
-        },
-        {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
-    },
-    {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
-    },
-    {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
-    },
-  ],
+const selectItem = (item) => {
+  selectedItemTitle.value = item.title
 }
 
-const activeTeam = ref(data.teams[0])
-
-function setActiveTeam(team: typeof data.teams[number]) {
-  activeTeam.value = team
+const data = {
+  navMain: [
+    {
+      title: 'Events',
+      icon: Calendar,
+    },
+    {
+      title: 'Inquiries',
+      icon: MessageCircleQuestion,
+    },
+    {
+      title: 'Users',
+      icon: Users,
+    },
+  ],
 }
 </script>
