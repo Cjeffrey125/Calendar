@@ -43,19 +43,15 @@ class InquiriesController extends Controller
         $inquiry = Inquiry::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string|max:1000',
+            'status' => 'required|string|max:255',
         ]);
 
         $inquiry->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'message' => $request->message,
+            'status' => $request->status,
         ]);
 
         return response()->json([
-            'message' => 'Inquiry updated successfully!',
+            'message' => 'Status updated successfully!',
             'inquiry' => $inquiry,
         ]);
     }
