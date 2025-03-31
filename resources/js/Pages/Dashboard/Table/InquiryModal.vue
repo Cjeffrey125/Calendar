@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,} from '@/components/ui/select'
-import { ref, defineProps, defineEmits } from 'vue';
+import { ref, defineProps, defineEmits, watch  } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/toast/use-toast'
@@ -57,6 +57,42 @@ const updateStatus = async () => {
     });
   }
 };
+
+const deleteInquiry = async () => {
+  if (!props.inquiry) return;
+
+  try {
+    const response = await axios.delete(`/api/inquiries/${props.inquiry.id}`);
+
+    closeDialog();
+
+    toast({
+      title: 'Deleted!',
+      description: response.data.message || 'The inquiry has been deleted.',
+      variant: 'success',
+      duration: 3000,
+    });
+
+    emit('refresh-inquiries');
+  } catch (error) {
+    console.error('Error deleting inquiry:', error);
+
+    toast({
+      title: 'Error',
+      description: 'Failed to delete the inquiry. Please try again.',
+      variant: 'destructive',
+      duration: 3000,
+    });
+  }
+};
+
+watch(
+  () => props.inquiry,
+  (newInquiry) => {
+    selectedStatus.value = newInquiry?.status || 'pending';
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -73,13 +109,13 @@ const updateStatus = async () => {
         <div v-if="props.inquiry" class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div class="flex items-center space-x-2">
-                    <p class="font-semibold">Date:</p>
+                    <p class="font-semibold text-sm">Date:</p>
                     <span class="text-sm text-muted-foreground">
                     {{ new Date(props.inquiry.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) }}
                     </span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <p class="font-semibold">Status:</p>
+                    <p class="font-semibold text-sm">Status:</p>
                     <Select v-model="selectedStatus">
                         <SelectTrigger class="w-[120px]">
                         <SelectValue :placeholder="props.inquiry.status.replace(/^./, props.inquiry.status[0].toUpperCase())" />
@@ -94,23 +130,24 @@ const updateStatus = async () => {
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <p class="font-semibold">Name:</p>
+                    <p class="font-semibold text-sm">Name:</p>
                     <span class="text-sm text-muted-foreground">{{ props.inquiry.name }}</span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <p class="font-semibold">Email:</p>
+                    <p class="font-semibold text-sm">Email:</p>
                     <span class="text-sm text-muted-foreground">{{ props.inquiry.email }}</span>
                 </div>
                 </div>
 
                 <div class="border border-gray-300 p-3 rounded-md bg-gray-50 mt-4">
-                <p class="font-semibold">Message:</p>
+                <p class="font-semibold text-sm">Message:</p>
                 <p class="text-sm text-muted-foreground">{{ props.inquiry.message }}</p>
             </div>
         </div>
 
         <DialogFooter>
             <Button variant="secondary" @click="closeDialog">Close</Button>
+            <Button variant="destructive" @click="deleteInquiry">Delete</Button>
             <Button variant="lightGreen" @click="updateStatus">Save changes</Button>
         </DialogFooter>
         </DialogContent>
