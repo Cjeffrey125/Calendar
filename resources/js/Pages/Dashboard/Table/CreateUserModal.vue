@@ -106,7 +106,7 @@ const createUser = async () => {
           <Label for="password" class="text-right">
             Password
           </Label>
-          <Input id="password" v-model="password" class="col-span-3" placeholder="Enter Password" />
+          <Input id="password" v-model="password" type="password" class="col-span-3" placeholder="Enter Password" />
         </div>
 
         <div class="grid grid-cols-4 items-center gap-4">
@@ -119,8 +119,8 @@ const createUser = async () => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="1">Admin</SelectItem>
-                <SelectItem value="0">User</SelectItem>
+                <SelectItem value="Admin">Admin</SelectItem>
+                <SelectItem value="User">User</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
