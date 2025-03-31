@@ -9,6 +9,10 @@
             </Link>
 
 
+            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="flex items-center gap-2 text-lg font-semibold md:text-base">
+                <span class="text-sm">Dashboard</span>
+            </Link>
+
             <!-- <div v-if="$page.props.auth.user" class="flex flex-col md:flex-row md:items-center md:gap-5">
                 <Link :href = "route('dashboard')" class="text-foreground transition-colors hover:text-foreground">
                     Dashboard
@@ -31,8 +35,12 @@
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                  
-                            <DropdownMenuSeparator />
+                           
+                            <DropdownMenuItem>
+                                <Link :href="route('user-profile')" class="w-full text-left">
+                                    My Profile
+                                </Link>
+                            </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Link :href="route('logout')" method="post" as="button" class="w-full text-left">
                                     Logout
