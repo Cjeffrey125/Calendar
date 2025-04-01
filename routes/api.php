@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InquiriesController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,5 @@ Route::get('/inquiries', [InquiriesController::class, 'index']);
 Route::post('/inquiries', [InquiriesController::class, 'store']);
 Route::put('/inquiries/{id}', [InquiriesController::class, 'update']);
 Route::delete('/inquiries/{id}', [InquiriesController::class, 'destroy']);
+
+Route::apiResource('events', EventController::class);

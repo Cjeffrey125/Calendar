@@ -1,88 +1,57 @@
 <script setup lang="ts">
-import type { ColumnDef, ColumnFiltersState, ExpandedState, SortingState, VisibilityState } from '@tanstack/vue-table';
+import type { ColumnDef, SortingState, ColumnFiltersState, VisibilityState, ExpandedState } from '@tanstack/vue-table';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
-import { ArrowUpDown, ChevronDown } from 'lucide-vue-next';
 import { h, ref, onMounted } from 'vue';
-import { valueUpdater } from '@/lib/utils'
-import InquiryDialog from './Table/InquiryModal.vue';
+import { valueUpdater } from '@/lib/utils';
+import EventModal from './Table/EventModal.vue';
+import UpdateEventModal from './Table/UpdateEventModal.vue';
 import axios from 'axios';
 
-interface Inquiry {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  status: string;
-  created_at: string;
+interface Event {
+  id: number;
+  event: string;
+  details: string;
+  event_type: string;
+  start_date: string;
+  end_date: string;
 }
 
-const inquiries = ref<Inquiry[]>([]);
+const events = ref<Event[]>([]);
 const isDialogOpen = ref(false);
-const selectedInquiry = ref<Inquiry | null>(null);
+const isModalOpen = ref(false);
+const selectedEvent = ref<Event | null>(null);
+
+
+const fetchEvents = async () => {
+  try {
+    const response = await axios.get('/api/events');
+    events.value = response.data;
+  } catch (error) {
+    console.error('Error fetching events:', error);
+  }
+};
+
+onMounted(() => {
+    fetchEvents();
+});
+
+const handleRowClick = (row: any) => {
+    selectedEvent.value = row.original;
+    isDialogOpen.value = true;
+};
 
 const formatDate = (dateString: string) => {
   if (!dateString) return '-';
   return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(dateString));
 };
 
-const fetchInquiries = async () => {
-  try {
-    const response = await axios.get('/api/inquiries');
-    inquiries.value = response.data.inquiries;
-
-    if (selectedInquiry.value) {
-      selectedInquiry.value = inquiries.value.find(({ id }) => id === selectedInquiry.value.id) || null;
-    }
-  } catch (error) {
-    console.error('Error fetching inquiries:', error);
-  }
-};
-
-onMounted(() => {
-  fetchInquiries();
-});
-
-const handleRowClick = (row: any) => {
-  selectedInquiry.value = row.original;
-  isDialogOpen.value = true;
-};
-
-const columns: ColumnDef<Inquiry>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-    cell: ({ row }) => h('div', { class: 'capitalize' }, row.getValue('name')),
-  },
-  {
-    accessorKey: 'email',
-    header: 'Email',
-    cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('email')),
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      }, () => ['Status', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
-    },
-    cell: ({ row }) => h('div', { class: 'capitalize' }, row.getValue('status')),
-  },
-  {
-    accessorKey: 'created_at',
-    header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      }, () => ['Date', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
-    },
-    cell: ({ row }) => {
-
-      return h('div', {}, formatDate(row.getValue('created_at')))
-    },
-  },
+const columns: ColumnDef<Event>[] = [
+  { accessorKey: 'event', header: 'Event', cell: ({ row }) => h('div', {}, row.getValue('event')) },
+  { accessorKey: 'event_type', header: 'Type', cell: ({ row }) => h('div', {}, row.getValue('event_type')) },
+  { accessorKey: 'start_date', header: 'Start Date', cell: ({ row }) => h('div', {}, formatDate(row.getValue('start_date'))) },
+  { accessorKey: 'end_date', header: 'End Date', cell: ({ row }) => h('div', {}, formatDate(row.getValue('end_date'))) },
 ];
 
 const sorting = ref<SortingState>([]);
@@ -92,7 +61,7 @@ const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
 
 const table = useVueTable({
-  data: inquiries,
+  data: events,
   columns,
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
@@ -112,12 +81,18 @@ const table = useVueTable({
     get expanded() { return expanded.value },
   },
 });
+
 </script>
 
 <template>
   <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md p-4">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold">Inquiries</h2>
+      <h2 class="text-lg font-semibold">Events</h2>
+      <EventModal 
+        :isOpen="isModalOpen" 
+        @update:isOpen="isModalOpen = $event" 
+        @refresh-events="fetchEvents" 
+      />
     </div>
 
     <div class="rounded-md border">
@@ -132,14 +107,9 @@ const table = useVueTable({
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
             <template v-for="row in table.getRowModel().rows" :key="row.id">
-              <TableRow :data-state="row.getIsSelected() && 'selected'" @click="handleRowClick(row)">
-                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <TableRow :data-state="row.getIsSelected() && 'selected'" @click="handleRowClick(row)">
+                    <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                   <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-                </TableCell>
-              </TableRow>
-              <TableRow v-if="row.getIsExpanded()">
-                <TableCell :colspan="row.getAllCells().length">
-                  {{ JSON.stringify(row.original) }}
                 </TableCell>
               </TableRow>
             </template>
@@ -154,18 +124,15 @@ const table = useVueTable({
     </div>
 
     <div class="flex items-center justify-end space-x-2 py-4">
-      <div class="space-x-2">
-        <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">Previous</Button>
-        <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">Next</Button>
-      </div>
+      <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">Previous</Button>
+      <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">Next</Button>
     </div>
-  </div>
 
-
-  <InquiryDialog 
+    <UpdateEventModal 
       :isOpen="isDialogOpen" 
-      :inquiry="selectedInquiry" 
+      :event="selectedEvent" 
       @update:isOpen="isDialogOpen = $event"
-      @refresh-inquiries="fetchInquiries"
+      @refresh-events="fetchEvents"
     />
+  </div>
 </template>

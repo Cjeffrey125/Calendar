@@ -1,0 +1,142 @@
+<script setup lang="ts">
+import axios from 'axios';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ref, defineProps, defineEmits } from 'vue';
+import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/toast';
+import { useToast } from '@/components/ui/toast/use-toast';
+
+const { toast } = useToast()
+
+const props = defineProps({
+  isOpen: Boolean,
+});
+
+const eventName = ref('')
+const eventDetails = ref('')
+const eventType = ref('')
+const startDate = ref('')
+const endDate = ref('')
+
+const emit = defineEmits(['update:isOpen', 'refresh-events']);
+
+const closeDialog = () => {
+    emit('update:isOpen', false);
+};
+
+const saveEvent = async () => {
+    if (!eventName.value || !eventDetails.value || !eventType.value || !startDate.value || !endDate.value) {
+    toast({
+      title: 'Error Creating the Event',
+      description: 'Please fill in all fields before submitting.',
+      variant: 'destructive',
+    })
+    return
+  }
+
+  try {
+    const eventData = {
+      event: eventName.value,
+      details: eventDetails.value,
+      event_type: eventType.value,
+      start_date: startDate.value,
+      end_date: endDate.value,
+    };
+
+    const response = await axios.post('/api/events', eventData)
+
+    if (response.status === 201) {
+        toast({
+        title: 'Event Created',
+        description: `${eventName.value} has been created successfully.`,
+        variant: 'success',
+      })
+      eventName.value = ''
+      eventDetails.value = ''
+      eventType.value = ''
+      startDate.value = ''
+      endDate.value = ''
+
+
+      closeDialog()
+
+      emit('refresh-events')
+    }
+    } catch (error) {
+        toast({
+        title: 'Error',
+        description: 'Something went wrong while creating the user. Please try again.',
+        variant: 'destructive',
+        })
+        console.error('Error creating user:', error)
+    }
+};
+</script>
+
+<template>
+  <Toaster />
+
+  <Dialog :open="props.isOpen" @update:open="emit('update:isOpen', $event)">
+    <DialogTrigger as-child>
+      <Button variant="outline">
+        Create Event
+      </Button>
+    </DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Create Event</DialogTitle>
+        <DialogDescription>
+            Create the event here. Click save when you're done.
+        </DialogDescription>
+      </DialogHeader>
+
+      <div class="space-y-4 mb-8">
+        <div>
+          <label class="font-semibold text-sm">Event Name:</label>
+          <input v-model="eventName" class="w-full border rounded p-2" type="text" />
+        </div>
+        
+        <div>
+          <label class="font-semibold text-sm">Details:</label>
+          <textarea v-model="eventDetails" class="w-full border rounded p-2" rows="3"></textarea>
+        </div>
+        
+        <div>
+          <label class="font-semibold text-sm">Event Type:</label>
+          <Select v-model="eventType">
+            <SelectTrigger class="w-full">
+              <SelectValue :placeholder="eventType || 'Select Type'" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Start of School Year">Start of School Year</SelectItem>
+                <SelectItem value="End of School Year">End of School Year</SelectItem>
+                <SelectItem value="Holiday">Holiday</SelectItem>
+                <SelectItem value="Seminars">Seminars</SelectItem>
+                <SelectItem value="Midterm">Midterm</SelectItem>
+                <SelectItem value="Finals">Finals</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div class="flex space-x-4">
+          <div>
+            <label class="font-semibold text-sm">Start Date:</label>
+            <input v-model="startDate" class="border rounded p-2 w-full" type="date" />
+          </div>
+          <div>
+            <label class="font-semibold text-sm">End Date:</label>
+            <input v-model="endDate" class="border rounded p-2 w-full" type="date" />
+          </div>
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button variant="secondary" @click="closeDialog">Close</Button>
+        <Button variant="lightGreen" @click="saveEvent">Save</Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+</template>
