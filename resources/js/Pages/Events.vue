@@ -13,7 +13,7 @@
             <div class="flex w-full max-w-6xl flex-col items-center gap-8 md:flex-row mb-2">
                 <div>
                     <h3 class="text-3xl font-semibold mb-4 text-left w-full">
-                        School Events
+                        University Calendar
                     </h3>
                 </div>
 
