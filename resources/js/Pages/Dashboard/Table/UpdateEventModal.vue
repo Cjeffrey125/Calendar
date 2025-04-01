@@ -10,7 +10,7 @@ import { useToast } from '@/components/ui/toast/use-toast';
 const props = defineProps({
   isOpen: Boolean,
   event: Object as () => {
-    id: string;
+    id: number;
     event: string;
     details: string;
     event_type: string;
@@ -127,10 +127,12 @@ const deleteEvent = async () => {
               <SelectGroup>
                 <SelectItem value="Start of School Year">Start of School Year</SelectItem>
                 <SelectItem value="End of School Year">End of School Year</SelectItem>
-                <SelectItem value="Holiday">Holiday</SelectItem>
-                <SelectItem value="Seminars">Seminars</SelectItem>
                 <SelectItem value="Midterm">Midterm</SelectItem>
                 <SelectItem value="Finals">Finals</SelectItem>
+                <SelectItem value="Holiday">Holiday</SelectItem>
+                <SelectItem value="Seminars">Seminars</SelectItem>
+                <SelectItem value="Academic Events">Academic Events</SelectItem>
+                <SelectItem value="Examination Day">Examination Day</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

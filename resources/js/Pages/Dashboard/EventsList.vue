@@ -87,7 +87,7 @@ const table = useVueTable({
 <template>
   <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md p-4">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold">Events</h2>
+      <h2 class="text-lg font-semibold">University Calendar</h2>
       <EventModal 
         :isOpen="isModalOpen" 
         @update:isOpen="isModalOpen = $event" 

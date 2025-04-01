@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, defineEmits } from 'vue';
 import {
   Select,
   SelectContent,
@@ -6,15 +7,19 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { ref } from 'vue'
+} from '@/components/ui/select';
 
-// Store selected month
-const selectedMonth = ref<string | null>(null)
+const selectedMonth = ref<string | null>(null);
+const emit = defineEmits(['update:month']);
+
+const updateMonth = (value: string) => {
+  selectedMonth.value = value;
+  emit('update:month', value);
+};
 </script>
 
 <template>
-  <Select v-model="selectedMonth">
+  <Select v-model="selectedMonth" @update:modelValue="updateMonth">
     <SelectTrigger class="w-[180px]">
       <SelectValue :placeholder="'Select a month'" />
     </SelectTrigger>
