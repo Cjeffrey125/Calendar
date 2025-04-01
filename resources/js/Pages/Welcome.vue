@@ -155,25 +155,17 @@ const message = ref('');
 const status = ref('');
 
 onMounted(() => {
-    let isScrolling = false;
-
     scrollContainer.value.addEventListener('wheel', (event) => {
         event.preventDefault();
-        if (!isScrolling) {
-            isScrolling = true;
-            let direction = event.deltaY > 0 ? 1 : -1;
-            let currentScroll = scrollContainer.value.scrollTop;
-            let windowHeight = window.innerHeight;
 
-            scrollContainer.value.scrollTo({
-                top: currentScroll + direction * windowHeight,
-                behavior: 'smooth'
-            });
-
-            setTimeout(() => (isScrolling = false), 1000);
-        }
-    }, { passive: false });
+        let scrollSpeed = event.deltaY * 1.5;
+        scrollContainer.value.scrollBy({
+            top: scrollSpeed,
+            behavior: 'smooth'
+        });
+    });
 });
+
 
 const submitForm = () => {
     if (!name.value || !email.value || !message.value) {

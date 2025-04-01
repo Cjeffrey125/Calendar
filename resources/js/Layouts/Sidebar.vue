@@ -42,6 +42,7 @@
       <div class="flex items-center gap-2 px-4 mt-24">
       </div>
       <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <EventsList v-if="selectedItemTitle === 'Events'" />
         <Inquiries v-if="selectedItemTitle === 'Inquiries'" />
         <UsersList v-if="selectedItemTitle === 'Users'" />
       </div>
@@ -74,6 +75,7 @@ import { Users, Calendar, MessageCircleQuestion } from 'lucide-vue-next'
 import { defineProps, ref } from 'vue'
 import Inquiries from '@/Pages/Dashboard/Inquiries.vue'
 import UsersList from '@/Pages/Dashboard/UsersList.vue'
+import EventsList from '@/Pages/Dashboard/EventsList.vue'
 
 const selectedItemTitle = ref('Events')
 

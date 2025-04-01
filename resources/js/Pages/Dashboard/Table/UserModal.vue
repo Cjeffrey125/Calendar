@@ -35,8 +35,6 @@ const updateUser = async () => {
       authenticated: isAuthenticated.value,
     };
     
-    console.log('Sending payload:', payload);
-
     const response = await axios.put(`/api/users/${props.user?.id}`, payload);
 
     toast({
