@@ -1,1 +1,0 @@
-import{c as a}from"./utils-DTaVIxUI.js";import{o,g as t,r as l,n,u as c}from"./app-CpNEOMge.js";const f={__name:"CardFooter",props:{class:{type:null,required:!1}},setup(e){const s=e;return(r,p)=>(o(),t("div",{class:n(c(a)("flex items-center p-6 pt-0",s.class))},[l(r.$slots,"default")],2))}};export{f as _};
