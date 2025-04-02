@@ -22,6 +22,7 @@ const eventsPerPage = 5;
 const selectedEvent = ref<EventItem | null>(null);
 
 const isDialogOpen = ref(false);
+const selectedMonth = ref<string | null>(null);
 
 const fetchEvents = async () => {
   try {
@@ -43,12 +44,20 @@ const formatDate = (dateString: string) => {
   };
 };
 
-const paginatedEvents = computed(() => {
-  const start = (currentPage.value - 1) * eventsPerPage;
-  return events.value.slice(start, start + eventsPerPage);
+const filteredEvents = computed(() => {
+  if (!selectedMonth.value) return events.value;
+  return events.value.filter(event => {
+    const eventMonth = new Date(event.start_date).toLocaleString('en-US', { month: 'long' });
+    return eventMonth === selectedMonth.value;
+  });
 });
 
-const totalPages = computed(() => Math.ceil(events.value.length / eventsPerPage));
+const paginatedEvents = computed(() => {
+  const start = (currentPage.value - 1) * eventsPerPage;
+  return filteredEvents.value.slice(start, start + eventsPerPage);
+});
+
+const totalPages = computed(() => Math.ceil(filteredEvents.value.length / eventsPerPage));
 
 const nextPage = () => {
   if (currentPage.value < totalPages.value) currentPage.value++;
@@ -81,14 +90,13 @@ const formattedDate = (start: string, end: string) => {
     return `${startDate.toLocaleDateString('en-US', formatOptions)} - ${endDate.toLocaleDateString('en-US', formatOptions)}`;
   }
 };
-
 </script>
 
 <template>
   <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md p-4">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-lg font-semibold">Event List</h2>
-      <CalendarFilter />
+      <CalendarFilter v-model:month="selectedMonth" />
     </div>
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
