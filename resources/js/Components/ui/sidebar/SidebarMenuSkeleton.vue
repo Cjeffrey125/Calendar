@@ -1,5 +1,5 @@
 <script setup>
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/Components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { computed } from 'vue';
 

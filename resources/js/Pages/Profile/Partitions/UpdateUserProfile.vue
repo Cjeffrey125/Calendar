@@ -72,12 +72,12 @@
 
 <script setup>
 import { useForm, usePage, Link } from '@inertiajs/vue3';
-import { Button } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/toast';
-import { useToast } from '@/components/ui/toast/use-toast';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardHeader, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/Components/ui/button';
+import { Toaster } from '@/Components/ui/toast';
+import { useToast } from '@/Components/ui/toast/use-toast';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+import { Card, CardHeader, CardDescription, CardContent, CardFooter } from '@/Components/ui/card';
 import Header from '@/Layouts/Header.vue';
 
 defineProps({

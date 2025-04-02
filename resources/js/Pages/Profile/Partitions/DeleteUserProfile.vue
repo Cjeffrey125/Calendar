@@ -1,14 +1,14 @@
 <script setup>
-import { Button } from '@/components/ui/button';
+import { Button } from '@/Components/ui/button';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
-import { Input } from '@/components/ui/input';
-import { Card, CardHeader, CardDescription, CardFooter } from '@/components/ui/card';
+import { Input } from '@/Components/ui/input';
+import { Card, CardHeader, CardDescription, CardFooter } from '@/Components/ui/card';
 import { useForm } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
-import { Toaster } from '@/components/ui/toast';
-import { useToast } from '@/components/ui/toast/use-toast';
+import { Toaster } from '@/Components/ui/toast';
+import { useToast } from '@/Components/ui/toast/use-toast';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);

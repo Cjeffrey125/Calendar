@@ -66,10 +66,10 @@
 
 <script setup lang="ts">
 import InputError from '@/Components/InputError.vue';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import Header from '@/Layouts/Header.vue';
 

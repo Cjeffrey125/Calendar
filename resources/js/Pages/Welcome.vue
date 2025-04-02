@@ -131,9 +131,9 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/toast/use-toast';
-import { Toaster } from '@/components/ui/toast'
+import { Button } from '@/Components/ui/button';
+import { useToast } from '@/Components/ui/toast/use-toast';
+import { Toaster } from '@/Components/ui/toast'
 import Events from './Events.vue';
 import Header from '@/Layouts/Header.vue'
 

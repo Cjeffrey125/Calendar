@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, defineEmits, defineProps } from 'vue'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Toaster } from '@/components/ui/toast'
-import { useToast } from '@/components/ui/toast/use-toast'
+import { Button } from '@/Components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
+import { Toaster } from '@/Components/ui/toast'
+import { useToast } from '@/Components/ui/toast/use-toast'
 import axios from 'axios'
 
 const { toast } = useToast()

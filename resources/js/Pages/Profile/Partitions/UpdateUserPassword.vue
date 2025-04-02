@@ -62,12 +62,12 @@
   <script setup>
   import { ref } from 'vue';
   import { useForm } from '@inertiajs/vue3';
-  import { Toaster } from '@/components/ui/toast';
-  import { useToast } from '@/components/ui/toast/use-toast';
-  import { Button } from '@/components/ui/button';
-  import { Label } from '@/components/ui/label';
-  import { Input } from '@/components/ui/input';
-  import { Card, CardHeader, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+  import { Toaster } from '@/Components/ui/toast';
+  import { useToast } from '@/Components/ui/toast/use-toast';
+  import { Button } from '@/Components/ui/button';
+  import { Label } from '@/Components/ui/label';
+  import { Input } from '@/Components/ui/input';
+  import { Card, CardHeader, CardDescription, CardContent, CardFooter } from '@/Components/ui/card';
   import InputError from '@/Components/InputError.vue';
   
   const passwordInput = ref(null);

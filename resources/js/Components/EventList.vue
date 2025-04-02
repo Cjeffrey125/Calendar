@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/Components/ui/button';
 import { 
   Dialog, DialogContent, DialogDescription, DialogFooter, 
   DialogHeader, DialogTitle, DialogTrigger 
-} from '@/components/ui/dialog';
+} from '@/Components/ui/dialog';
 import axios from 'axios';
 import CalendarFilter from './CalendarFilter.vue';
 

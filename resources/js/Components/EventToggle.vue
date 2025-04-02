@@ -5,7 +5,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/tabs';
+} from '@/Components/ui/tabs';
 
 const selectedTab = ref('List');
 const emit = defineEmits(['update:modelValue']);

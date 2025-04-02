@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/Components/ui/collapsible'
 import {
   Sidebar,
   SidebarContent,
@@ -70,7 +70,7 @@ import {
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar'
+} from '@/Components/ui/sidebar'
 import { Users, Calendar, MessageCircleQuestion } from 'lucide-vue-next'
 import { defineProps, ref } from 'vue'
 import Inquiries from '@/Pages/Dashboard/Inquiries.vue'

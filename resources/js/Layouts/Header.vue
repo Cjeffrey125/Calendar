@@ -126,9 +126,9 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/Components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/Components/ui/sheet';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu';
 import { CircleUser, Menu } from 'lucide-vue-next';
 
 defineProps({

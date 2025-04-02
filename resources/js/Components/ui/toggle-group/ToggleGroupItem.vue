@@ -1,6 +1,6 @@
 <script setup>
 import { cn } from '@/lib/utils';
-import { toggleVariants } from '@/components/ui/toggle';
+import { toggleVariants } from '@/Components/ui/toggle';
 import { ToggleGroupItem, useForwardProps } from 'reka-ui';
 import { computed, inject } from 'vue';
 

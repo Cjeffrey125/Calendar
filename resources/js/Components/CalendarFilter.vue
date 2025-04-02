@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/Components/ui/select';
 
 const selectedMonth = ref<string | null>(null);
 const emit = defineEmits(['update:month']);
