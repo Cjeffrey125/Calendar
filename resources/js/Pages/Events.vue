@@ -34,7 +34,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import EventList from '@/components/EventList.vue';
+import EventList from '@/Components/EventList.vue';
 import EventCalendar from '@/Components/EventCalendar.vue';
 import Header from '@/Layouts/Header.vue';
 import EventToggle from '@/Components/EventToggle.vue';
