@@ -160,6 +160,8 @@ onMounted(fetchEvents)
   border: 1px solid #ccc;
   background-color: transparent;
   text-align: center;
+  max-width: 100%;
+  display: block;
 }
 
 :deep(.fc-daygrid-event:hover) {
@@ -172,6 +174,7 @@ onMounted(fetchEvents)
 :deep(.fc-daygrid-event .fc-event-title),
 :deep(.fc-daygrid-event-title) {
   color: black !important; 
+  text-overflow: ellipsis !important;
 }
 
 :deep(.fc-daygrid-event-dot) {
