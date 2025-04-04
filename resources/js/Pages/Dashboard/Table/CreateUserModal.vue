@@ -1,3 +1,66 @@
+<template>
+  <Toaster />
+
+  <Dialog :open="props.isOpen" @update:open="emit('update:isOpen', $event)">
+    <DialogTrigger as-child>
+      <Button variant="outline">
+        Create User
+      </Button>
+    </DialogTrigger>
+    <DialogContent class="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Create User</DialogTitle>
+        <DialogDescription>
+          Create the user profile here. Click save when you're done.
+        </DialogDescription>
+      </DialogHeader>
+      <div class="grid gap-4 py-4">
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="name" class="text-right">
+            Name
+          </Label>
+          <Input id="name" v-model="name" class="col-span-3" placeholder="Enter Name" />
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="email" class="text-right">
+            Email
+          </Label>
+          <Input id="email" v-model="email" class="col-span-3" placeholder="Enter Email" />
+        </div>
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="password" class="text-right">
+            Password
+          </Label>
+          <Input id="password" v-model="password" type="password" class="col-span-3" placeholder="Enter Password" />
+        </div>
+
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="role" class="text-right">
+            Role:
+          </Label>
+          <Select v-model="role">
+            <SelectTrigger class="w-[120px]">
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Admin">Admin</SelectItem>
+                <SelectItem value="User">User</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button variant="lightGreen" @click="createUser">
+          Create User
+        </Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+</template>
+
 <script setup lang="ts">
 import { ref, defineEmits, defineProps } from 'vue'
 import { Button } from '@/Components/ui/button'
@@ -72,66 +135,3 @@ const createUser = async () => {
   }
 }
 </script>
-
-<template>
-  <Toaster />
-
-  <Dialog :open="props.isOpen" @update:open="emit('update:isOpen', $event)">
-    <DialogTrigger as-child>
-      <Button variant="outline">
-        Create User
-      </Button>
-    </DialogTrigger>
-    <DialogContent class="sm:max-w-[425px]">
-      <DialogHeader>
-        <DialogTitle>Create User</DialogTitle>
-        <DialogDescription>
-          Create the user profile here. Click save when you're done.
-        </DialogDescription>
-      </DialogHeader>
-      <div class="grid gap-4 py-4">
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="name" class="text-right">
-            Name
-          </Label>
-          <Input id="name" v-model="name" class="col-span-3" placeholder="Enter Name" />
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="email" class="text-right">
-            Email
-          </Label>
-          <Input id="email" v-model="email" class="col-span-3" placeholder="Enter Email" />
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="password" class="text-right">
-            Password
-          </Label>
-          <Input id="password" v-model="password" type="password" class="col-span-3" placeholder="Enter Password" />
-        </div>
-
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="role" class="text-right">
-            Role:
-          </Label>
-          <Select v-model="role">
-            <SelectTrigger class="w-[120px]">
-              <SelectValue placeholder="Select role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="Admin">Admin</SelectItem>
-                <SelectItem value="User">User</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <DialogFooter>
-        <Button variant="lightGreen" @click="createUser">
-          Create User
-        </Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
-</template>

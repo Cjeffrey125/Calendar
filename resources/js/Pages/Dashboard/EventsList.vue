@@ -1,3 +1,56 @@
+<template>
+  <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md p-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">University Calendar</h2>
+      <EventModal 
+        :isOpen="isModalOpen" 
+        @update:isOpen="isModalOpen = $event" 
+        @refresh-events="fetchEvents" 
+      />
+    </div>
+
+    <div class="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <template v-if="table.getRowModel().rows?.length">
+            <template v-for="row in table.getRowModel().rows" :key="row.id">
+                <TableRow :data-state="row.getIsSelected() && 'selected'" @click="handleRowClick(row)">
+                    <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                  <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                </TableCell>
+              </TableRow>
+            </template>
+          </template>
+          <TableRow v-else>
+            <TableCell :colspan="columns.length" class="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+
+    <div class="flex items-center justify-end space-x-2 py-4">
+      <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">Previous</Button>
+      <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">Next</Button>
+    </div>
+
+    <UpdateEventModal 
+      :isOpen="isDialogOpen" 
+      :event="selectedEvent" 
+      @update:isOpen="isDialogOpen = $event"
+      @refresh-events="fetchEvents"
+    />
+  </div>
+</template>
+
 <script setup lang="ts">
 import type { ColumnDef, SortingState, ColumnFiltersState, VisibilityState, ExpandedState } from '@tanstack/vue-table';
 import { Button } from '@/Components/ui/button';
@@ -83,56 +136,3 @@ const table = useVueTable({
 });
 
 </script>
-
-<template>
-  <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-md p-4">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold">University Calendar</h2>
-      <EventModal 
-        :isOpen="isModalOpen" 
-        @update:isOpen="isModalOpen = $event" 
-        @refresh-events="fetchEvents" 
-      />
-    </div>
-
-    <div class="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id">
-              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <template v-if="table.getRowModel().rows?.length">
-            <template v-for="row in table.getRowModel().rows" :key="row.id">
-                <TableRow :data-state="row.getIsSelected() && 'selected'" @click="handleRowClick(row)">
-                    <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                  <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-                </TableCell>
-              </TableRow>
-            </template>
-          </template>
-          <TableRow v-else>
-            <TableCell :colspan="columns.length" class="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </div>
-
-    <div class="flex items-center justify-end space-x-2 py-4">
-      <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">Previous</Button>
-      <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">Next</Button>
-    </div>
-
-    <UpdateEventModal 
-      :isOpen="isDialogOpen" 
-      :event="selectedEvent" 
-      @update:isOpen="isDialogOpen = $event"
-      @refresh-events="fetchEvents"
-    />
-  </div>
-</template>

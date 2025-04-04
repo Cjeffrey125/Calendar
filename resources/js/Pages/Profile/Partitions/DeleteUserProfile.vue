@@ -1,63 +1,3 @@
-<script setup>
-import { Button } from '@/Components/ui/button';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import Modal from '@/Components/Modal.vue';
-import { Input } from '@/Components/ui/input';
-import { Card, CardHeader, CardDescription, CardFooter } from '@/Components/ui/card';
-import { useForm } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
-import { Toaster } from '@/Components/ui/toast';
-import { useToast } from '@/Components/ui/toast/use-toast';
-
-const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
-const { toast } = useToast();
-
-const form = useForm({
-    password: '',
-});
-
-const confirmUserDeletion = () => {
-    confirmingUserDeletion.value = true;
-};
-
-const deleteUser = async () => {
-    form.processing = true;
-
-    try {
-        await form.delete(route('profile.destroy'), {
-            preserveScroll: true,
-        });
-    } catch (error) {
-        toast({
-            title: 'Error',
-            description: 'Something went wrong. Please try again.',
-            variant: 'error',
-        });
-
-        passwordInput.value.focus();
-    } finally {
-        form.processing = false;
-    }
-};
-
-const closeModal = () => {
-    confirmingUserDeletion.value = false;
-    form.reset();
-};
-
-watch(() => form.errors.password, (newError) => {
-    if (!newError) {
-        toast({
-            title: 'Success',
-            description: 'Your account has been deleted successfully.',
-            variant: 'success',
-        });
-    }
-});
-</script>
-
 <template>
     <Toaster />
     <Card class="mt-6">
@@ -117,3 +57,63 @@ watch(() => form.errors.password, (newError) => {
         </Modal>
     </Card>
 </template>
+
+<script setup>
+import { Button } from '@/Components/ui/button';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import Modal from '@/Components/Modal.vue';
+import { Input } from '@/Components/ui/input';
+import { Card, CardHeader, CardDescription, CardFooter } from '@/Components/ui/card';
+import { useForm } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
+import { Toaster } from '@/Components/ui/toast';
+import { useToast } from '@/Components/ui/toast/use-toast';
+
+const confirmingUserDeletion = ref(false);
+const passwordInput = ref(null);
+const { toast } = useToast();
+
+const form = useForm({
+    password: '',
+});
+
+const confirmUserDeletion = () => {
+    confirmingUserDeletion.value = true;
+};
+
+const deleteUser = async () => {
+    form.processing = true;
+
+    try {
+        await form.delete(route('profile.destroy'), {
+            preserveScroll: true,
+        });
+    } catch (error) {
+        toast({
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+            variant: 'error',
+        });
+
+        passwordInput.value.focus();
+    } finally {
+        form.processing = false;
+    }
+};
+
+const closeModal = () => {
+    confirmingUserDeletion.value = false;
+    form.reset();
+};
+
+watch(() => form.errors.password, (newError) => {
+    if (!newError) {
+        toast({
+            title: 'Success',
+            description: 'Your account has been deleted successfully.',
+            variant: 'success',
+        });
+    }
+});
+</script>

@@ -1,32 +1,3 @@
-<script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/Components/ui/table'
-
-import {
-  FlexRender,
-  getCoreRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
-
-const props = defineProps<{
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}>()
-
-const table = useVueTable({
-  get data() { return props.data },
-  get columns() { return props.columns },
-  getCoreRowModel: getCoreRowModel(),
-})
-</script>
-
 <template>
   <div class="border rounded-md">
     <Table>
@@ -62,3 +33,32 @@ const table = useVueTable({
     </Table>
   </div>
 </template>
+
+<script setup lang="ts" generic="TData, TValue">
+import type { ColumnDef } from '@tanstack/vue-table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/Components/ui/table'
+
+import {
+  FlexRender,
+  getCoreRowModel,
+  useVueTable,
+} from '@tanstack/vue-table'
+
+const props = defineProps<{
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+}>()
+
+const table = useVueTable({
+  get data() { return props.data },
+  get columns() { return props.columns },
+  getCoreRowModel: getCoreRowModel(),
+})
+</script>
