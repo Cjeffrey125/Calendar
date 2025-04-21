@@ -20,6 +20,11 @@
           <label class="font-semibold text-sm">Event Name:</label>
           <input v-model="eventName" class="w-full border rounded p-2" type="text" />
         </div>
+
+        <div>
+          <label class="font-semibold text-sm block mb-1 mt-4">Location:</label>
+          <input v-model="location" class="w-full border rounded p-2 h-10" type="text"/>
+        </div>
         
         <div>
           <label class="font-semibold text-sm">Details:</label>
@@ -48,13 +53,24 @@
         </div>
         
         <div class="flex space-x-4">
-          <div>
-            <label class="font-semibold text-sm">Start Date:</label>
-            <input v-model="startDate" class="border rounded p-2 w-full" type="date" />
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">Start Date:</label>
+            <input v-model="startDate" class="border rounded p-2 w-full h-10" type="date" />
           </div>
-          <div>
-            <label class="font-semibold text-sm">End Date:</label>
-            <input v-model="endDate" class="border rounded p-2 w-full" type="date" />
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">End Date:</label>
+            <input v-model="endDate" class="border rounded p-2 w-full h-10" type="date" />
+          </div>
+        </div>
+
+        <div class="flex space-x-4 mt-4">
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">Start Time:</label>
+            <input v-model="startTime" class="border rounded p-2 w-full h-10" type="time" />
+          </div>
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">End Time:</label>
+            <input v-model="endTime" class="border rounded p-2 w-full h-10" type="time" />
           </div>
         </div>
       </div>
@@ -87,6 +103,9 @@ const eventDetails = ref('')
 const eventType = ref('')
 const startDate = ref('')
 const endDate = ref('')
+const startTime = ref('');
+const endTime = ref('');
+const location = ref('');
 
 const emit = defineEmits(['update:isOpen', 'refresh-events']);
 
@@ -111,6 +130,9 @@ const saveEvent = async () => {
       event_type: eventType.value,
       start_date: startDate.value,
       end_date: endDate.value,
+      start_time: startTime.value ? `${startTime.value}:00` : null,
+      end_time: endTime.value ? `${endTime.value}:00` : null,
+      location: location.value,
     };
 
     const response = await axios.post('/api/events', eventData)
@@ -126,7 +148,9 @@ const saveEvent = async () => {
       eventType.value = ''
       startDate.value = ''
       endDate.value = ''
-
+      startTime.value = ''
+      endTime.value = ''
+      location.value = ''
 
       closeDialog()
 

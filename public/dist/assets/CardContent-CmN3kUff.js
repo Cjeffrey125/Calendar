@@ -1,1 +1,0 @@
-import{c as a}from"./utils-DTaVIxUI.js";import{o,g as t,r as n,n as l,u as c}from"./app-Da3hQlmN.js";const f={__name:"CardContent",props:{class:{type:null,required:!1}},setup(s){const e=s;return(r,p)=>(o(),t("div",{class:l(c(a)("p-6 pt-0",e.class))},[n(r.$slots,"default")],2))}};export{f as _};

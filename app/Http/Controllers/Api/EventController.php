@@ -28,6 +28,9 @@ class EventController extends Controller
             'event_type' => 'required|string|max:100',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'nullable|date_format:H:i:s',
+            'end_time' => 'nullable|date_format:H:i:s',
+            'location' => 'nullable|string|max:255',
         ]);
 
         $event = Event::create($request->all());
@@ -55,6 +58,9 @@ class EventController extends Controller
             'event_type' => 'sometimes|string|max:100',
             'start_date' => 'sometimes|date',
             'end_date' => 'sometimes|date|after_or_equal:start_date',
+            'start_time' => 'nullable|date_format:H:i:s',
+            'end_time' => 'nullable|date_format:H:i:s',
+            'location' => 'nullable|string|max:255',
         ]);
 
         $event = Event::findOrFail($id);

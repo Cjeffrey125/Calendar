@@ -14,6 +14,9 @@ interface EventItem {
   details: string;
   start_date: string;
   end_date: string;
+  location: string;
+  start_time: string;
+  end_time: string;
 }
 
 const events = ref<EventItem[]>([]);
@@ -90,6 +93,16 @@ const formattedDate = (start: string, end: string) => {
     return `${startDate.toLocaleDateString('en-US', formatOptions)} - ${endDate.toLocaleDateString('en-US', formatOptions)}`;
   }
 };
+
+const formatTime = (time: string) => {
+  if (!time) return '';
+  const [h, m] = time.split(':');
+  const hour = parseInt(h);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const formattedHour = hour % 12 || 12;
+  return `${formattedHour}:${m} ${ampm}`;
+};
+
 </script>
 
 <template>
@@ -125,16 +138,44 @@ const formattedDate = (start: string, end: string) => {
               </DialogTitle>
             </DialogHeader>
 
-            <div class="flex items-end space-x-1 text-sm text-gray-600 ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+            <div class="flex flex-col space-y-1 text-sm ">
+              <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" 
+                  <path stroke-linecap="round" stroke-linejoin="round"
                     d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                 </svg>
-                <span class="whitespace-nowrap">{{ formattedDate(selectedEvent.start_date, selectedEvent.end_date) }}</span>
+                <p class="font-semibold text-sm">Date:</p>
+
+                <span class="whitespace-nowrap">
+                  {{ formattedDate(selectedEvent.start_date, selectedEvent.end_date) }}
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2" v-if="selectedEvent.start_time && selectedEvent.end_time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <p class="font-semibold text-sm">Time:</p>
+                <span class="whitespace-nowrap">
+                  {{ formatTime(selectedEvent.start_time) }} to {{ formatTime(selectedEvent.end_time) }}
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2" >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+                <p class="font-semibold text-sm">Location:</p>
+                <span class="whitespace-nowrap">{{ selectedEvent.location }}</span>
+              </div>
+
             </div>
-            
-            <div class="border border-gray-300 p-3 rounded-md bg-gray-50 mt-4">
+
+            <div class="border border-gray-300 p-3 rounded-md bg-gray-50">
               <p class="font-semibold text-sm">Details:</p>
               <p class="text-sm text-muted-foreground">{{ selectedEvent.details }}</p>
             </div>

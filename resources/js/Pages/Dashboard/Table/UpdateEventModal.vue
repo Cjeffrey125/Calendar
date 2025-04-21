@@ -10,12 +10,17 @@
       <div class="space-y-4 mb-8">
         <div>
           <label class="font-semibold text-sm">Event Name:</label>
-          <input v-model="eventName" class="w-full border rounded p-2" type="text" />
+          <input v-model="eventName" class="w-full border rounded p-1" type="text" />
+        </div>
+
+        <div>
+          <label class="font-semibold text-sm">Location:</label>
+          <input v-model="location" class="w-full border rounded p-1" type="text" />
         </div>
         
         <div>
           <label class="font-semibold text-sm">Details:</label>
-          <textarea v-model="eventDetails" class="w-full border rounded p-2" rows="3"></textarea>
+          <textarea v-model="eventDetails" class="w-full border rounded p-1" rows="3"></textarea>
         </div>
         
         <div>
@@ -40,16 +45,29 @@
         </div>
         
         <div class="flex space-x-4">
-          <div>
-            <label class="font-semibold text-sm">Start Date:</label>
-            <input v-model="startDate" class="border rounded p-2 w-full" type="date" />
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">Start Date:</label>
+            <input v-model="startDate" class="border rounded p-1 w-full h-10" type="date" />
           </div>
-          <div>
-            <label class="font-semibold text-sm">End Date:</label>
-            <input v-model="endDate" class="border rounded p-2 w-full" type="date" />
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">End Date:</label>
+            <input v-model="endDate" class="border rounded p-1 w-full h-10" type="date" />
+          </div>
+        </div>
+
+        <div class="flex space-x-4 mt-4">
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">Start Time:</label>
+            <input v-model="startTime" class="border rounded p-1 w-full h-10" type="time" />
+          </div>
+          <div class="w-full">
+            <label class="font-semibold text-sm block mb-1">End Time:</label>
+            <input v-model="endTime" class="border rounded p-1 w-full h-10" type="time" />
           </div>
         </div>
       </div>
+
+
 
       <DialogFooter>
         <Button variant="secondary" @click="closeDialog">Close</Button>
@@ -78,6 +96,9 @@ const props = defineProps({
     event_type: string;
     start_date: string;
     end_date: string;
+    start_time?: string;
+    end_time?: string;
+    location?: string;
   } | null,
 });
 
@@ -89,6 +110,9 @@ const eventDetails = ref('');
 const eventType = ref('');
 const startDate = ref('');
 const endDate = ref('');
+const startTime = ref('');
+const endTime = ref('');
+const location = ref('');
 
 const formatDateForInput = (date: string) => {
   return date ? date.split(' ')[0] : '';
@@ -103,6 +127,9 @@ watch(
       eventType.value = newEvent.event_type;
       startDate.value = formatDateForInput(newEvent.start_date);
       endDate.value = formatDateForInput(newEvent.end_date);
+      startTime.value = newEvent.start_time;
+      endTime.value = newEvent.end_time;
+      location.value = newEvent.location;
     }
   },
   { immediate: true }
@@ -122,6 +149,9 @@ const updateEvent = async () => {
       event_type: eventType.value,
       start_date: startDate.value,
       end_date: endDate.value,
+      start_time: startTime.value ? `${startTime.value}:00` : null,
+      end_time: endTime.value ? `${endTime.value}:00` : null,
+      location: location.value,
     };
 
     await axios.put(`/api/events/${props.event.id}`, payload);
