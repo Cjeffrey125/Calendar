@@ -139,6 +139,18 @@ const closeDialog = () => {
   emit('update:isOpen', false);
 };
 
+const toTimeWithSeconds = (time: string | undefined | null) => {
+  if (!time) return null;
+  const parts = time.trim().split(':');
+  if (parts.length === 2) {
+    return `${time.trim()}:00`;
+  } else if (parts.length === 3) {
+    return time.trim();
+  } else {
+    return null;
+  }
+};
+
 const updateEvent = async () => {
   if (!props.event?.id) return;
 
@@ -149,8 +161,8 @@ const updateEvent = async () => {
       event_type: eventType.value,
       start_date: startDate.value,
       end_date: endDate.value,
-      start_time: startTime.value ? `${startTime.value}:00` : null,
-      end_time: endTime.value ? `${endTime.value}:00` : null,
+      start_time: toTimeWithSeconds(startTime.value),
+      end_time: toTimeWithSeconds(endTime.value),
       location: location.value,
     };
 
